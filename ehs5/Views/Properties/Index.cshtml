@@ -13,71 +13,81 @@
 
     <style>
         body {
-            background-color: transparent !important;
-            color: #5a4e3d;
+            background-color: #f4f7f6;
+            color: #4a4a4a;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
         }
 
         .card {
-            background-color: rgba(249, 243, 230, 0.8);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
             transition: all 0.3s ease-in-out;
         }
 
             .card:hover {
                 transform: scale(1.05);
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
             }
 
-        h1, .card-title, .card-text {
-            color: #5a4e3d;
+        h1 {
+            color: #2a3d47;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-align: center;
         }
 
         .form-control {
-            border-radius: 10px;
-            background-color: #f5e9d7;
+            border-radius: 15px;
+            background-color: #eae2c7;
             color: #5a4e3d;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
         }
 
+        .form-group select,
         .btn {
-            border-radius: 5px;
+            border-radius: 12px;
             font-weight: bold;
         }
 
+        .btn {
+            padding: 0.8rem 1.4rem;
+        }
+
         .btn-lg {
-            padding: 0.5rem 1rem;
+            font-size: 1.1rem;
         }
 
         .btn-create {
-            background-color: #d6c49c;
-            color: #5a4e3d;
+            background-color: #8f8e7f;
+            color: white;
         }
 
         .btn-verified {
-            background-color: #85a7a3;
+            background-color: #3db3b0;
             color: white;
         }
 
         .btn-deactivated {
-            background-color: #d07355;
+            background-color: #f27b6b;
             color: white;
         }
 
         .btn-activated {
-            background-color: #82a3b3;
+            background-color: #62a4d2;
             color: white;
         }
 
         .btn-details {
-            background-color: #5a4e3d;
+            background-color: #2a3d47;
             color: white;
         }
 
         .btn-edit {
-            background-color: #d6c49c;
-            color: #5a4e3d;
+            background-color: #8f8e7f;
+            color: white;
         }
 
         .btn-delete {
@@ -92,67 +102,101 @@
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
         }
 
         .action-buttons {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
         .card-body {
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
         .card-img-top {
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            height: 200px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            height: 250px;
             object-fit: cover;
         }
 
         .contact-details {
             display: block;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #5a4e3d;
         }
 
-        .collapse {
-            margin-top: 10px;
+        .badge {
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 15px;
+        }
+
+        .badge-verified {
+            background-color: #3db3b0;
+            color: white;
+        }
+
+        .badge-not-verified {
+            background-color: #f27b6b;
+            color: white;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f4f7f6;
+        }
+
+        .search-result-container {
+            margin-bottom: 3rem;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1 class="text-center mb-5">Property Index</h1>
+        <h1>Property Listings</h1>
 
         <!-- City Filter Form -->
-        <form method="get" action="@Url.Action("Index", "Properties")" class="mb-4">
-            <div class="form-group">
-                <select name="cityId" class="form-control">
-                    <option value="">-- Select a City --</option>
-                    @foreach (var city in ViewData["Cities"] as List<ehs5.Models.City>)
-                    {
-                        <option value="@city.CityId">
-                            @city.CityName
-                        </option>
-                    }
-                </select>
-            </div>
-            <button type="submit" class="btn btn-lg" style="background-color: #c19a6b; color: white;">
-                Filter by City
-            </button>
-        </form>
+        <div class="search-result-container">
+            <form method="get" action="@Url.Action("Index", "Properties")" class="mb-4">
+                <div class="form-group">
+                    <select name="cityId" class="form-control">
+                        <option value="">-- Select a City --</option>
+                        @foreach (var city in ViewData["Cities"] as List<ehs5.Models.City>)
+                        {
+                            <option value="@city.CityId">
+                                @city.CityName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-lg btn-create">
+                    Filter by City
+                </button>
+            </form>
 
-        <!-- Price Sorting Form -->
-        <form method="get" action="@Url.Action("Index", "Properties")" class="mb-4">
-            <div class="form-group">
-                <select name="sortOrder" class="form-control" onchange="this.form.submit()">
-                    <option value="price_asc">Sort by Price (Ascending)</option>
-                    <option value="price_desc">Sort by Price (Descending)</option>
-                </select>
-            </div>
-        </form>
+            <!-- Price Sorting Form -->
+            <form method="get" action="@Url.Action("Index", "Properties")" class="mb-4">
+                <div class="form-group">
+                    <select name="sortOrder" class="form-control" onchange="this.form.submit()">
+                        <option value="price_asc">Sort by Price (Ascending)</option>
+                        <option value="price_desc">Sort by Price (Descending)</option>
+                    </select>
+                </div>
+            </form>
+        </div>
 
         <!-- Action Buttons -->
         <div class="action-buttons">
@@ -182,11 +226,11 @@
                             <!-- Badge for Verified -->
                             @if (item.IsVerified)
                             {
-                                <span class="badge badge-success" style="background-color: #85a7a3; color: white;">Verified</span>
+                                <span class="badge badge-verified">Verified</span>
                             }
                             else
                             {
-                                <span class="badge badge-secondary" style="background-color: #d07355; color: white;">Not Verified</span>
+                                <span class="badge badge-not-verified">Not Verified</span>
                             }
 
                             <div class="mt-3">

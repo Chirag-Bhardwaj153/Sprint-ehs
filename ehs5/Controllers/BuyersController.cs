@@ -46,7 +46,7 @@ namespace ehs5.Controllers
             return View(buyer);
         }
 
-        // GET: Buyers/Create
+        // GET: Buyers/Cr   eate
         public IActionResult Create()
         {
             ViewData["BuyerCityId"] = new SelectList(_context.Cities, "CityId", "CityId");

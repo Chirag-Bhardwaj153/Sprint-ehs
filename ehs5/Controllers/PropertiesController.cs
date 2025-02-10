@@ -93,28 +93,6 @@ namespace ehs5.Controllers
             return View(@property);
         }
 
-        // GET: Properties/Verify/5
-        public async Task<IActionResult> Verify(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var property = await _context.Properties.FindAsync(id);
-            if (property == null)
-            {
-                return NotFound();
-            }
-
-            // Set the property as verified
-            property.IsVerified = true;
-            _context.Update(property);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
-        }
-
         // GET: Properties/Create
         [JWTAction(allowedRoles: "Admin,Seller")]
         public async Task<IActionResult> Create()
@@ -122,6 +100,7 @@ namespace ehs5.Controllers
             var sellers = await _context.Sellers.ToListAsync();
             var cities = await _context.Cities.ToListAsync();
 
+            // Use 'UserName' instead of 'FirstName'
             ViewData["Sellers"] = new SelectList(sellers, "SellerId", "UserName");
             ViewData["Cities"] = new SelectList(cities, "CityId", "CityName");
 
@@ -136,7 +115,7 @@ namespace ehs5.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // Set property as active by default
+                // Set property as active by default if not specified
                 property.IsActive = true;
 
                 _context.Add(property);
@@ -153,7 +132,7 @@ namespace ehs5.Controllers
                             var propertyImage = new Image
                             {
                                 PropertyId = property.PropertyId,
-                                Image1 = memoryStream.ToArray() // Store byte array
+                                Image1 = memoryStream.ToArray() // Store image byte array
                             };
                             _context.Images.Add(propertyImage);
                             await _context.SaveChangesAsync();
@@ -164,7 +143,7 @@ namespace ehs5.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // If model state is invalid, rebind data for dropdowns
+            // Rebind dropdowns if validation fails
             ViewData["Sellers"] = new SelectList(_context.Sellers, "SellerId", "UserName", property.SellerId);
             ViewData["Cities"] = new SelectList(_context.Cities, "CityId", "CityName", property.CityId);
             return View(property);
@@ -184,8 +163,10 @@ namespace ehs5.Controllers
                 return NotFound();
             }
 
+            // Use 'UserName' for seller in the dropdown list
             ViewData["CityId"] = new SelectList(await _context.Cities.ToListAsync(), "CityId", "CityName", @property.CityId);
-            ViewData["SellerId"] = new SelectList(_context.Sellers, "SellerId", "SellerId", @property.SellerId);
+            ViewData["SellerId"] = new SelectList(_context.Sellers, "SellerId", "UserName", @property.SellerId);
+
             return View(@property);
         }
 
@@ -199,16 +180,8 @@ namespace ehs5.Controllers
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var cityExists = await _context.Cities.AnyAsync(c => c.CityId == @property.CityId);
-                if (!cityExists)
-                {
-                    ModelState.AddModelError("CityId", "Selected city does not exist.");
-                    ViewData["CityId"] = new SelectList(await _context.Cities.ToListAsync(), "CityId", "CityName", @property.CityId);
-                    return View(@property);
-                }
-
                 try
                 {
                     _context.Update(@property);
@@ -229,7 +202,7 @@ namespace ehs5.Controllers
             }
 
             ViewData["CityId"] = new SelectList(await _context.Cities.ToListAsync(), "CityId", "CityName", @property.CityId);
-            ViewData["SellerId"] = new SelectList(_context.Sellers, "SellerId", "SellerId", @property.SellerId);
+            ViewData["SellerId"] = new SelectList(_context.Sellers, "SellerId", "UserName", @property.SellerId);
             return View(@property);
         }
 
@@ -270,41 +243,50 @@ namespace ehs5.Controllers
         }
 
         // GET: Properties/Verified/5
+        // GET: Properties/Verified
         [JWTAction(allowedRoles: "Admin")]
-        public async Task<IActionResult> Verified(int sellerId)
+        public async Task<IActionResult> Verified()
         {
+            // Fetch all verified properties (no sellerId filter)
             var verifiedProperties = await _context.Properties
-                .Where(p => p.SellerId == sellerId && p.IsVerified)
-                .Include(p => p.Seller)
+                .Where(p => p.IsVerified)  // Only filter by IsVerified
+                .Include(p => p.Seller)  // Include Seller info for display
                 .ToListAsync();
 
+            // Return the view with the filtered list of verified properties
             return View(verifiedProperties);
         }
 
-        // GET: Properties/Deactivated/5
-        public async Task<IActionResult> Deactivated(int sellerId)
+
+
+        // GET: Properties/Deactivated
+        public async Task<IActionResult> Deactivated()
         {
+            // Fetch all deactivated properties (IsActive = false)
             var deactivatedProperties = await _context.Properties
-                .Where(p => p.SellerId == sellerId && !p.IsActive)
-                .Include(p => p.Seller)
+                .Where(p => !p.IsActive)  // Filter by IsActive == false (deactivated)
+                .Include(p => p.Seller)  // Include Seller info for display
                 .ToListAsync();
 
-            // Add logging to check the result
-            Console.WriteLine($"Deactivated Properties Count: {deactivatedProperties.Count}");
+            // If no deactivated properties are found, return a custom view or message
+            if (!deactivatedProperties.Any())
+            {
+                return View("NoPropertiesFound");  // Custom view in case no deactivated properties are found
+            }
 
+            // Return the deactivated properties view
             return View(deactivatedProperties);
         }
+
 
         // GET: Properties/Activated
         public async Task<IActionResult> Activated()
         {
-            // Fetch all active properties for all sellers
             var activatedProperties = await _context.Properties
-                .Where(p => p.IsActive) // Only active properties
-                .Include(p => p.Seller) // Include Seller info for display
+                .Where(p => p.IsActive)
+                .Include(p => p.Seller)
                 .ToListAsync();
 
-            // Pass the activated properties to the view
             return View(activatedProperties);
         }
 
@@ -312,7 +294,7 @@ namespace ehs5.Controllers
         public async Task<IActionResult> GetOwnerContactDetails(int propertyId)
         {
             var property = await _context.Properties
-                .Include(p => p.Seller)  // Include Seller to get the email and phone number
+                .Include(p => p.Seller)
                 .FirstOrDefaultAsync(p => p.PropertyId == propertyId);
 
             if (property == null || property.Seller == null)
@@ -320,15 +302,11 @@ namespace ehs5.Controllers
                 return Json(new { success = false, message = "Property or Seller not found." });
             }
 
-            // Fetch email and phone from Seller model
             var contactDetails = new
             {
-                Email = property.Seller.EmailId ?? "Email not available", // Use EmailId field from Seller model
-                PhoneNumber = property.Seller.PhoneNo ?? "Phone not available" // Use PhoneNo field from Seller model
+                Email = property.Seller.EmailId ?? "Email not available",
+                PhoneNumber = property.Seller.PhoneNo ?? "Phone not available"
             };
-
-            // Log for debugging (optional)
-            Console.WriteLine($"Email: {contactDetails.Email}, Phone: {contactDetails.PhoneNumber}");
 
             return Json(new { success = true, data = contactDetails });
         }
