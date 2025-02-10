@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+
+<form method="post">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+    </div>
+
+    <div>
+        <label for="userType">User Type:</label>
+        <select id="userType" name="userType" required>
+            @foreach (var userType in ViewBag.UserTypes as List<string>)
+            {
+                <option value="@userType">@userType</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label for="cityId">City:</label>
+        <select id="cityId" name="cityId" required>
+            @foreach (var city in ViewBag.Cities as List<City>)
+            {
+                <option value="@city.CityId">@city.CityName</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label for="stateId">State:</label>
+        <select id="stateId" name="stateId" required>
+            @foreach (var state in ViewBag.States as List<State>)
+            {
+                <option value="@state.StateId">@state.StateName</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required />
+    </div>
+
+    <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required />
+    </div>
+
+    <div>
+        <label for="phoneNo">Phone Number:</label>
+        <input type="text" id="phoneNo" name="phoneNo" required />
+    </div>
+
+    <div>
+        <label for="emailId">Email Address:</label>
+        <input type="email" id="emailId" name="emailId" required />
+    </div>
+
+    <div>
+        <button type="submit">Register</button>
+    </div>
+</form>

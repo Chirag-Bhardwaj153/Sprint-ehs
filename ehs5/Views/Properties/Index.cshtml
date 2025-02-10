@@ -1,0 +1,222 @@
+﻿@model IEnumerable<ehs5.Models.Property>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Property Index</title>
+
+    <!-- Bootstrap 4 or 5 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: transparent !important;
+            color: #5a4e3d;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card {
+            background-color: rgba(249, 243, 230, 0.8);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .card:hover {
+                transform: scale(1.05);
+            }
+
+        h1, .card-title, .card-text {
+            color: #5a4e3d;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            background-color: #f5e9d7;
+            color: #5a4e3d;
+        }
+
+        .btn {
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn-lg {
+            padding: 0.5rem 1rem;
+        }
+
+        .btn-create {
+            background-color: #d6c49c;
+            color: #5a4e3d;
+        }
+
+        .btn-verified {
+            background-color: #85a7a3;
+            color: white;
+        }
+
+        .btn-deactivated {
+            background-color: #d07355;
+            color: white;
+        }
+
+        .btn-activated {
+            background-color: #82a3b3;
+            color: white;
+        }
+
+        .btn-details {
+            background-color: #5a4e3d;
+            color: white;
+        }
+
+        .btn-edit {
+            background-color: #d6c49c;
+            color: #5a4e3d;
+        }
+
+        .btn-delete {
+            background-color: #e46a5a;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-img-top {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .contact-details {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .collapse {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mb-5">Property Index</h1>
+
+        <!-- City Filter Form -->
+        <form method="get" action="@Url.Action("Index", "Properties")" class="mb-4">
+            <div class="form-group">
+                <select name="cityId" class="form-control">
+                    <option value="">-- Select a City --</option>
+                    @foreach (var city in ViewData["Cities"] as List<ehs5.Models.City>)
+                    {
+                        <option value="@city.CityId">
+                            @city.CityName
+                        </option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-lg" style="background-color: #c19a6b; color: white;">
+                Filter by City
+            </button>
+        </form>
+
+        <!-- Price Sorting Form -->
+        <form method="get" action="@Url.Action("Index", "Properties")" class="mb-4">
+            <div class="form-group">
+                <select name="sortOrder" class="form-control" onchange="this.form.submit()">
+                    <option value="price_asc">Sort by Price (Ascending)</option>
+                    <option value="price_desc">Sort by Price (Descending)</option>
+                </select>
+            </div>
+        </form>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a asp-action="Create" class="btn btn-lg btn-create">Create New Property</a> |
+            <a asp-action="Verified" asp-route-sellerId="@ViewData["SellerId"]" class="btn btn-lg btn-verified">View Verified Properties</a> |
+            <a asp-action="Deactivated" asp-route-sellerId="@ViewData["SellerId"]" class="btn btn-lg btn-deactivated">View Deactivated Properties</a> |
+            <a asp-action="Activated" asp-route-sellerId="@ViewData["SellerId"]" class="btn btn-lg btn-activated">View Activated Properties</a>
+        </div>
+
+        <!-- Properties Cards -->
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="@item.Images.FirstOrDefault()?.Image1" class="card-img-top" alt="@item.PropertyName" />
+                        <div class="card-body">
+                            <h5 class="card-title">@item.PropertyName</h5>
+                            <p class="card-text">@item.Description</p>
+                            <ul class="list-unstyled">
+                                <li><strong>Type:</strong> @item.PropertyType</li>
+                                <li><strong>Option:</strong> @item.PropertyOption</li>
+                                <li><strong>Price:</strong> @item.PriceRange</li>
+                                <li><strong>Landmark:</strong> @item.Landmark</li>
+                            </ul>
+
+                            <!-- Badge for Verified -->
+                            @if (item.IsVerified)
+                            {
+                                <span class="badge badge-success" style="background-color: #85a7a3; color: white;">Verified</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary" style="background-color: #d07355; color: white;">Not Verified</span>
+                            }
+
+                            <div class="mt-3">
+                                <a asp-action="Details" asp-route-id="@item.PropertyId" class="btn btn-details">Details</a>
+                                <a asp-action="Edit" asp-route-id="@item.PropertyId" class="btn btn-edit">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.PropertyId" class="btn btn-delete">Delete</a>
+
+                                <!-- Get Contact Details Button -->
+                                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#contact-details-@item.PropertyId">
+                                    Get Contact Details
+                                </button>
+
+                                <!-- Contact Details (Initially Hidden) -->
+                                <div id="contact-details-@item.PropertyId" class="collapse contact-details">
+                                    <p><strong>Email:</strong> @item.Seller?.EmailId</p>
+                                    <p><strong>Phone:</strong> @item.Seller?.PhoneNo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional for interactions) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

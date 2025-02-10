@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ehs5.Models.Seller>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SellerCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SellerState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserNameNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City.CityId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SellerCity.CityId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SellerState.StateId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State.StateId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserNameNavigation.UserName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SellerId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SellerId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SellerId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
