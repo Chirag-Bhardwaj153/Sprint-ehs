@@ -237,6 +237,15 @@
                                 <a asp-action="Details" asp-route-id="@item.PropertyId" class="btn btn-details">Details</a>
                                 <a asp-action="Edit" asp-route-id="@item.PropertyId" class="btn btn-edit">Edit</a>
                                 <a asp-action="Delete" asp-route-id="@item.PropertyId" class="btn btn-delete">Delete</a>
+                                <a asp-action="AddToCart" asp-route-propertyId="@item.PropertyId" class="btn btn-lg btn-success">Add to Cart</a>
+                                <!-- Add to Cart Button -->
+                                @* <form method="post" action="@Url.Action("AddToCart", "Properties")"> *@
+                                @*     <input type="hidden" name="propertyId" value="@item.PropertyId" /> *@
+                                @*     <button type="submit" class="btn btn-lg btn-success">Add to Cart</button> *@
+                                @*     <!-- Add to Cart Button (Updated) --> *@
+                                   
+
+                                @* </form> *@
 
                                 <!-- Get Contact Details Button -->
                                 <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#contact-details-@item.PropertyId">

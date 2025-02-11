@@ -21,8 +21,8 @@ namespace ehs5.Auth {
 
             var Token = new SecurityTokenDescriptor
             {
-                Issuer = "https://localhost:7098/",
-                Audience = "https://localhost:7098/",
+                Issuer = "https://ehs520250211081530.azurewebsites.net/",
+                Audience = "https://ehs520250211081530.azurewebsites.net/",
                 IssuedAt = DateTime.UtcNow,
                 Expires = time == 0 ? DateTime.UtcNow.AddYears(1) : DateTime.UtcNow.AddMinutes(time),
                 Subject = new ClaimsIdentity(claimslist),
