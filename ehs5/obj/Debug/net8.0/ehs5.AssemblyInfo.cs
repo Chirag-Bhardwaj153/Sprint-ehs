@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ehs5")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67964537953997d858003a43f1feb21dc69d651a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1bf7a1263a1cb4d350e8f1830bc8cc6cc123a58a")]
 [assembly: System.Reflection.AssemblyProductAttribute("ehs5")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ehs5")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
