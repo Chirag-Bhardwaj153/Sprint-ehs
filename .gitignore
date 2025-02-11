@@ -1,0 +1,54 @@
+## Ignore build output directories
+ehs5/bin/
+ehs5/obj/
+.vs/
+
+## Ignore user-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+## Ignore Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+## Ignore ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+## Ignore JetBrains Rider files
+.idea/
+
+## Ignore VS Code settings folder
+.vscode/
+
+## Ignore Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+## Ignore other system files
+Thumbs.db
+Desktop.ini
+
+## Ignore log files
+*.log
+
+## Ignore Npm packages
+node_modules/
+
+## Ignore temporary files created by Visual Studio for Mac
+.vscode/
+
+# Ignore Rider-specific files
+.idea/
+
+## Ignore NuGet package folders
+.nuget/
+
+# Ignore NuGet package cache
+# Comment this line if you want to keep the local cache for NuGet
+.nuget/packages/
