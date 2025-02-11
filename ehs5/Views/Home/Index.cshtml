@@ -1,0 +1,196 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            color: #f7f7f7;
+            font-family: 'Helvetica', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0;
+        }
+
+        /* Full-screen Video Background with Blue Tint */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(50%) sepia(100%) hue-rotate(180deg); /* Adding blue tint filter */
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark overlay */
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+            .navbar a {
+                color: #fff !important;
+                text-decoration: none;
+                padding: 10px 20px;
+                transition: all 0.3s ease;
+                font-size: 1.1rem;
+            }
+
+                .navbar a:hover {
+                    background-color: #ffdb58; /* Soft Lemon */
+                    transform: scale(1.1);
+                    border-radius: 5px;
+                }
+
+        /* Header Section Styling */
+        .header {
+            text-align: center;
+            padding: 120px 20px;
+            color: #fff;
+            z-index: 2;
+            position: relative;
+        }
+
+            .header h1 {
+                font-size: 4rem;
+                font-weight: 700;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: #ffdb58; /* Bright and warm */
+                animation: fadeInUp 2s ease-out;
+                text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+            }
+
+            .header p {
+                font-size: 1.5rem;
+                color: #f7f7f7;
+                margin-top: 20px;
+                animation: fadeInUp 2s ease-out 1s;
+                text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+            }
+
+        /* Main Content Section */
+        .main-content {
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+            .main-content h2 {
+                font-size: 3rem;
+                font-weight: 600;
+                color: #ff6b6b; /* Bold Coral */
+                text-transform: uppercase;
+                margin-bottom: 20px;
+                animation: fadeInUp 1.5s ease-out;
+            }
+
+            .main-content p {
+                font-size: 1.25rem;
+                color: #f7f7f7;
+                animation: fadeInUp 2s ease-out 1.5s;
+                margin-bottom: 40px;
+            }
+
+        /* Button Styling */
+        .btn-home {
+            background-color: #ff6b6b; /* Coral */
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+            .btn-home:hover {
+                background-color: #ffdb58; /* Soft Lemon */
+                transform: scale(1.1);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+        /* Footer Section */
+        .footer {
+            background-color: #3a539b;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Full-screen Video Background with Blue Tint -->
+    <video autoplay muted loop class="video-background">
+        <source src="https://cdn.pixabay.com/video/2023/03/10/154140-807166727_large.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Navbar with links to Properties and Carts -->
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">Easy Housing</a>
+        <div class="navbar-nav ml-auto">
+            <a href="@Url.Action("Index", "Properties")" class="nav-item nav-link">Properties</a>
+            <a href="@Url.Action("Index", "Carts")" class="nav-item nav-link">Carts</a>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Welcome to Easy Housing</h1>
+        <p>Your one-stop destination for easy home finding</p>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="main-content">
+        <h2>Find Your Dream Home Today!</h2>
+        <p>Browse through our wide selection of properties or add them to your cart for easy comparison!</p>
+        <a href="@Url.Action("Index", "Properties")" class="btn-home">Explore Properties</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Easy Housing System. All rights reserved.</p>
+    </div>
+
+    <!-- Bootstrap JS (Optional for interactions) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

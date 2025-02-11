@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ehs5.Models.Property>
+
+<h1 class="text-center mb-5">Verified Properties</h1>
+
+<p>
+    <a asp-action="Index" class="btn btn-lg btn-primary mb-4">Back to All Properties</a>
+</p>
+
+<!-- Debugging: Check the number of properties -->
+<p>Number of verified properties: @Model.Count()</p>
+
+<!-- Verified Properties Table -->
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Property Name</th>
+                <th>Type</th>
+                <th>Option</th>
+                <th>Address</th>
+                <th>Price Range</th>
+                <th>Initial Deposit</th>
+                <th>Landmark</th>
+                <th>Seller</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var property in Model)
+            {
+                <tr>
+                    <td>@property.PropertyName</td>
+                    <td>@property.PropertyType</td>
+                    <td>@property.PropertyOption</td>
+                    <td>@property.Address</td>
+                    <td>@property.PriceRange</td>
+                    <td>@property.InitialDeposit</td>
+                    <td>@property.Landmark</td>
+                    <td>@property.Seller?.FirstName</td>
+                    <td>
+                        <!-- Details Button -->
+                        <a asp-action="Details" asp-route-id="@property.PropertyId" class="btn btn-info">Details</a>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Seller"))
+                        {
+                            <!-- Edit and Delete Buttons (visible for Admin and Seller only) -->
+                            <a asp-action="Edit" asp-route-id="@property.PropertyId" class="btn btn-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@property.PropertyId" class="btn btn-danger">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Optional: Add Pagination if the list of properties is large -->
+<div class="d-flex justify-content-center">
+    @* Add pagination controls here if needed *@
+</div>
+
+<!-- Bootstrap JS (Optional for interactions) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

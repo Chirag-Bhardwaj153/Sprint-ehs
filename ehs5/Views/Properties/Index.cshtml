@@ -1,0 +1,275 @@
+﻿@model IEnumerable<ehs5.Models.Property>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Property Index</title>
+
+    <!-- Bootstrap 4 or 5 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f7f6;
+            color: #4a4a4a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            }
+
+        h1 {
+            color: #2a3d47;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .form-control {
+            border-radius: 15px;
+            background-color: #eae2c7;
+            color: #5a4e3d;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group select,
+        .btn {
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 0.8rem 1.4rem;
+        }
+
+        .btn-lg {
+            font-size: 1.1rem;
+        }
+
+        .btn-create {
+            background-color: #8f8e7f;
+            color: white;
+        }
+
+        .btn-verified {
+            background-color: #3db3b0;
+            color: white;
+        }
+
+        .btn-deactivated {
+            background-color: #f27b6b;
+            color: white;
+        }
+
+        .btn-activated {
+            background-color: #62a4d2;
+            color: white;
+        }
+
+        .btn-details {
+            background-color: #2a3d47;
+            color: white;
+        }
+
+        .btn-edit {
+            background-color: #8f8e7f;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #e46a5a;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .card-img-top {
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .contact-details {
+            display: block;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #5a4e3d;
+        }
+
+        .badge {
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 15px;
+        }
+
+        .badge-verified {
+            background-color: #3db3b0;
+            color: white;
+        }
+
+        .badge-not-verified {
+            background-color: #f27b6b;
+            color: white;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f4f7f6;
+        }
+
+        .search-result-container {
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Property Listings</h1>
+
+        <!-- City Filter Form -->
+        <div class="search-result-container">
+            <form method="get" action="@Url.Action("Index", "Properties")" class="mb-4">
+                <div class="form-group">
+                    <select name="cityId" class="form-control">
+                        <option value="">-- Select a City --</option>
+                        @foreach (var city in ViewData["Cities"] as List<ehs5.Models.City>)
+                        {
+                            <option value="@city.CityId">
+                                @city.CityName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-lg btn-create">
+                    Filter by City
+                </button>
+            </form>
+
+            <!-- Price Sorting Form -->
+            <form method="get" action="@Url.Action("Index", "Properties")" class="mb-4">
+                <div class="form-group">
+                    <select name="sortOrder" class="form-control" onchange="this.form.submit()">
+                        <option value="price_asc">Sort by Price (Ascending)</option>
+                        <option value="price_desc">Sort by Price (Descending)</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a asp-action="Create" class="btn btn-lg btn-create">Create New Property</a> |
+            <a asp-action="Verified" asp-route-sellerId="@ViewData["SellerId"]" class="btn btn-lg btn-verified">View Verified Properties</a> |
+            <a asp-action="Deactivated" asp-route-sellerId="@ViewData["SellerId"]" class="btn btn-lg btn-deactivated">View Deactivated Properties</a> |
+            <a asp-action="Activated" asp-route-sellerId="@ViewData["SellerId"]" class="btn btn-lg btn-activated">View Activated Properties</a>
+        </div>
+
+        <!-- Properties Cards -->
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="@item.Images.FirstOrDefault()?.Image1" class="card-img-top" alt="@item.PropertyName" />
+                        <div class="card-body">
+                            <h5 class="card-title">@item.PropertyName</h5>
+                            <p class="card-text">@item.Description</p>
+                            <ul class="list-unstyled">
+                                <li><strong>Type:</strong> @item.PropertyType</li>
+                                <li><strong>Option:</strong> @item.PropertyOption</li>
+                                <li><strong>Price:</strong> @item.PriceRange</li>
+                                <li><strong>Landmark:</strong> @item.Landmark</li>
+                            </ul>
+
+                            <!-- Badge for Verified -->
+                            @if (item.IsVerified)
+                            {
+                                <span class="badge badge-verified">Verified</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-not-verified">Not Verified</span>
+                            }
+
+                            <div class="mt-3">
+                                <a asp-action="Details" asp-route-id="@item.PropertyId" class="btn btn-details">Details</a>
+                                <a asp-action="Edit" asp-route-id="@item.PropertyId" class="btn btn-edit">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.PropertyId" class="btn btn-delete">Delete</a>
+                                <a asp-action="AddToCart" asp-route-propertyId="@item.PropertyId" class="btn btn-lg btn-success">Add to Cart</a>
+                                <!-- Add to Cart Button -->
+                                @* <form method="post" action="@Url.Action("AddToCart", "Properties")"> *@
+                                @*     <input type="hidden" name="propertyId" value="@item.PropertyId" /> *@
+                                @*     <button type="submit" class="btn btn-lg btn-success">Add to Cart</button> *@
+                                @*     <!-- Add to Cart Button (Updated) --> *@
+                                   
+
+                                @* </form> *@
+
+                                <!-- Get Contact Details Button -->
+                                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#contact-details-@item.PropertyId">
+                                    Get Contact Details
+                                </button>
+
+                                <!-- Contact Details (Initially Hidden) -->
+                                <div id="contact-details-@item.PropertyId" class="collapse contact-details">
+                                    <p><strong>Email:</strong> @item.Seller?.EmailId</p>
+                                    <p><strong>Phone:</strong> @item.Seller?.PhoneNo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional for interactions) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

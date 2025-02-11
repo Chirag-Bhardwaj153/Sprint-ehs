@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "Register";
+}
+
+<!-- Optional: If you have a header, it will stay as is. -->
+
+<h2 class="form-title">Register</h2>
+
+<form method="post" class="register-form">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" class="form-input" required />
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" class="form-input" required />
+    </div>
+
+    <div class="form-group">
+        <label for="userType">User Type:</label>
+        <select id="userType" name="userType" class="form-input" required>
+            @foreach (var userType in ViewBag.UserTypes as List<string>)
+            {
+                <option value="@userType">@userType</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="cityId">City:</label>
+        <select id="cityId" name="cityId" class="form-input" required>
+            @foreach (var city in ViewBag.Cities as List<City>)
+            {
+                <option value="@city.CityId">@city.CityName</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="stateId">State:</label>
+        <select id="stateId" name="stateId" class="form-input" required>
+            @foreach (var state in ViewBag.States as List<State>)
+            {
+                <option value="@state.StateId">@state.StateName</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" class="form-input" required />
+    </div>
+
+    <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" class="form-input" required />
+    </div>
+
+    <div class="form-group">
+        <label for="phoneNo">Phone Number:</label>
+        <input type="text" id="phoneNo" name="phoneNo" class="form-input" required />
+    </div>
+
+    <div class="form-group">
+        <label for="emailId">Email Address:</label>
+        <input type="email" id="emailId" name="emailId" class="form-input" required />
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="submit-button">Register</button>
+    </div>
+</form>
+
+<!-- Optional: Footer goes here, which remains unchanged -->
+<!-- Add some CSS styles to enhance the appearance -->
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7fc;
+        display: flex;
+        justify-content: center;
+        align-items: center; /* This will vertically center the content */
+        height: 100vh;
+        margin: 0;
+        padding-top: 40px; /* Provide some top padding */
+        padding-bottom: 40px; /* Provide some bottom padding */
+    }
+
+    .form-title {
+        text-align: center;
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .register-form {
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        margin-top: 20px; /* This ensures space between title and form */
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+
+        .form-input:focus {
+            border-color: #5a9bff;
+        }
+
+    .submit-button {
+        width: 100%;
+        padding: 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+</style>
